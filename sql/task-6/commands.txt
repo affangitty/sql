@@ -1,0 +1,101 @@
+SQL Task 6: Date and Time Functions
+
+1. Create Orders Table with Date
+
+Command:
+CREATE TABLE Orders (
+OrderId INT PRIMARY KEY,
+CustomerName VARCHAR(50),
+OrderDate DATETIME,
+Amount DECIMAL(10,2)
+);
+
+Explanation:
+Stores order details including date.
+
+---
+
+2. Insert Sample Data
+
+Command:
+INSERT INTO Orders VALUES
+(1, 'Affan', GETDATE() - 5, 5000),
+(2, 'Rahul', GETDATE() - 20, 3000),
+(3, 'Sara', GETDATE() - 40, 7000);
+
+Explanation:
+
+* Uses current date minus days
+* Creates recent and older records
+
+---
+
+3. Filter Last 30 Days
+
+Command:
+SELECT *
+FROM Orders
+WHERE OrderDate >= DATEADD(DAY, -30, GETDATE());
+
+Explanation:
+
+* DATEADD subtracts 30 days from today
+* Returns orders within last 30 days
+
+---
+
+4. Calculate Days Difference
+
+Command:
+SELECT OrderId,
+DATEDIFF(DAY, OrderDate, GETDATE()) AS DaysAgo
+FROM Orders;
+
+Explanation:
+Shows how many days ago each order was placed.
+
+---
+
+5. Add Days to Date
+
+Command:
+SELECT OrderId,
+DATEADD(DAY, 10, OrderDate) AS ExpectedDelivery
+FROM Orders;
+
+Explanation:
+Adds 10 days to order date (e.g., delivery estimate)
+
+---
+
+6. Format Date (SQL Server)
+
+Command:
+SELECT OrderId,
+CONVERT(VARCHAR, OrderDate, 103) AS FormattedDate
+FROM Orders;
+
+Explanation:
+Formats date as DD/MM/YYYY
+
+---
+
+7. Alternative (MySQL)
+
+Command:
+SELECT DATE_FORMAT(OrderDate, '%d-%m-%Y') AS FormattedDate
+FROM Orders;
+
+Explanation:
+Formats date in MySQL
+
+---
+
+8. Alternative (PostgreSQL)
+
+Command:
+SELECT TO_CHAR(OrderDate, 'DD-MM-YYYY') AS FormattedDate
+FROM Orders;
+
+Explanation:
+Formats date in PostgreSQL
