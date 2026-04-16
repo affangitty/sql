@@ -1,0 +1,45 @@
+SQL Task 1: Creating and Populating Tables
+
+1. Create Table
+
+Command:
+CREATE TABLE Employees (
+    Id INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Age INT,
+    Department VARCHAR(50),
+    Salary DECIMAL(10,2)
+);
+
+Explanation:
+
+* Id → unique identifier (Primary Key)
+* Name → required field (NOT NULL)
+* Age → integer value
+* Department → text field
+* Salary → decimal with 2 precision
+
+---
+
+2. Insert Data
+
+Command:
+INSERT INTO Employees (Id, Name, Age, Department, Salary) VALUES
+(1, 'Affan', 22, 'Engineering', 60000),
+(2, 'Rahul', 25, 'HR', 45000),
+(3, 'Sara', 23, 'Marketing', 50000),
+(4, 'Aman', 24, 'Engineering', 70000);
+
+Explanation:
+Adds multiple rows of sample data into the table.
+
+---
+
+3. Retrieve Data
+
+Command:
+SELECT * FROM Employees;
+
+Explanation:
+Fetches all records from Employees table.
+
