@@ -1,0 +1,107 @@
+SQL Task 5: Subqueries and Nested Queries
+
+1. Subquery in WHERE (Above Average Salary)
+
+Command:
+SELECT Name, Salary, Department
+FROM Employees e
+WHERE Salary > (
+SELECT AVG(Salary)
+FROM Employees
+);
+
+Explanation:
+
+* Inner query calculates average salary
+* Outer query selects employees earning above average
+
+---
+
+2. Subquery by Department (Correlated)
+
+Command:
+SELECT Name, Salary, Department
+FROM Employees e
+WHERE Salary > (
+SELECT AVG(Salary)
+FROM Employees
+WHERE Department = e.Department
+);
+
+Explanation:
+
+* Inner query depends on outer query (e.Department)
+* Compares salary within same department
+
+---
+
+3. Subquery in SELECT (Dynamic Column)
+
+Command:
+SELECT Name,
+Salary,
+(SELECT AVG(Salary) FROM Employees) AS AvgSalary
+FROM Employees;
+
+Explanation:
+
+* Adds a column showing overall average salary
+* Same value repeated for each row
+
+---
+
+4. Subquery with IN
+
+Command:
+SELECT Name, Department
+FROM Employees
+WHERE Department IN (
+SELECT Department
+FROM Employees
+WHERE Salary > 60000
+);
+
+Explanation:
+
+* Finds departments where high salary exists
+* Then selects all employees from those departments
+
+---
+
+5. Subquery with EXISTS
+
+Command:
+SELECT Name
+FROM Employees e
+WHERE EXISTS (
+SELECT 1
+FROM Employees
+WHERE Department = e.Department AND Salary > 60000
+);
+
+Explanation:
+
+* Checks if condition exists (faster in some cases)
+* Returns employees from qualifying departments
+
+---
+
+NON-CORRELATED vs CORRELATED
+
+Non-Correlated:
+
+* Runs once
+* Independent of outer query
+
+Example:
+SELECT AVG(Salary) FROM Employees
+
+---
+
+Correlated:
+
+* Runs for each row
+* Depends on outer query
+
+Example:
+WHERE Department = e.Department
