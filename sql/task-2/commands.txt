@@ -1,0 +1,79 @@
+SQL Task 2: Basic Filtering and Sorting
+
+1. Filter by Department
+
+Command:
+SELECT * FROM Employees
+WHERE Department = 'Engineering';
+
+Explanation:
+Returns only employees from Engineering department.
+
+---
+
+2. Filter with AND Condition
+
+Command:
+SELECT * FROM Employees
+WHERE Department = 'Engineering' AND Salary > 60000;
+
+Explanation:
+Returns employees who are in Engineering AND earn more than 60000.
+
+---
+
+3. Filter with OR Condition
+
+Command:
+SELECT * FROM Employees
+WHERE Department = 'HR' OR Department = 'Marketing';
+
+Explanation:
+Returns employees from HR OR Marketing departments.
+
+---
+
+4. Sort by Salary (Ascending)
+
+Command:
+SELECT * FROM Employees
+ORDER BY Salary ASC;
+
+Explanation:
+Sorts employees by salary in ascending order (lowest to highest).
+
+---
+
+5. Sort by Salary (Descending)
+
+Command:
+SELECT * FROM Employees
+ORDER BY Salary DESC;
+
+Explanation:
+Sorts employees by salary in descending order (highest to lowest).
+
+---
+
+6. Filter + Sort Combined
+
+Command:
+SELECT * FROM Employees
+WHERE Age > 22
+ORDER BY Salary DESC;
+
+Explanation:
+Filters employees older than 22 and sorts them by salary (highest first).
+
+---
+
+7. Multiple Sorting Columns
+
+Command:
+SELECT * FROM Employees
+ORDER BY Department ASC, Salary DESC;
+
+Explanation:
+
+* First sorts by Department (A-Z)
+* Then sorts by Salary within each department (high to low)
