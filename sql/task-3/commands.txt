@@ -1,0 +1,86 @@
+SQL Task 3: Simple Aggregation and Grouping
+
+1. Count Total Employees
+
+Command:
+SELECT COUNT(*) AS TotalEmployees
+FROM Employees;
+
+Explanation:
+Counts total number of rows in the Employees table.
+
+---
+
+2. Average Salary
+
+Command:
+SELECT AVG(Salary) AS AverageSalary
+FROM Employees;
+
+Explanation:
+Calculates average salary of all employees.
+
+---
+
+3. Total Salary
+
+Command:
+SELECT SUM(Salary) AS TotalSalary
+FROM Employees;
+
+Explanation:
+Calculates total salary of all employees.
+
+---
+
+4. Count Employees per Department
+
+Command:
+SELECT Department, COUNT(*) AS EmployeeCount
+FROM Employees
+GROUP BY Department;
+
+Explanation:
+Groups employees by department and counts how many are in each.
+
+---
+
+5. Average Salary per Department
+
+Command:
+SELECT Department, AVG(Salary) AS AvgSalary
+FROM Employees
+GROUP BY Department;
+
+Explanation:
+Calculates average salary for each department.
+
+---
+
+6. Filter Groups using HAVING
+
+Command:
+SELECT Department, COUNT(*) AS EmployeeCount
+FROM Employees
+GROUP BY Department
+HAVING COUNT(*) > 1;
+
+Explanation:
+Returns only departments with more than 1 employee.
+
+---
+
+7. Combine WHERE + GROUP BY + HAVING
+
+Command:
+SELECT Department, AVG(Salary) AS AvgSalary
+FROM Employees
+WHERE Age > 22
+GROUP BY Department
+HAVING AVG(Salary) > 50000;
+
+Explanation:
+
+* WHERE filters rows first
+* GROUP BY groups data
+* HAVING filters grouped results
