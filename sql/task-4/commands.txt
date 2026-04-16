@@ -1,0 +1,110 @@
+SQL Task 4: Multi-Table JOINs
+
+1. Create Customers Table
+
+Command:
+CREATE TABLE Customers (
+CustomerId INT PRIMARY KEY,
+Name VARCHAR(50)
+);
+
+Explanation:
+Stores customer details.
+
+---
+
+2. Create Orders Table
+
+Command:
+CREATE TABLE Orders (
+OrderId INT PRIMARY KEY,
+CustomerId INT,
+Product VARCHAR(50),
+Amount DECIMAL(10,2),
+FOREIGN KEY (CustomerId) REFERENCES Customers(CustomerId)
+);
+
+Explanation:
+
+* Links Orders to Customers using CustomerId
+* Establishes relationship between tables
+
+---
+
+3. Insert Sample Data
+
+Command:
+INSERT INTO Customers VALUES
+(1, 'Affan'),
+(2, 'Rahul'),
+(3, 'Sara');
+
+INSERT INTO Orders VALUES
+(101, 1, 'Laptop', 60000),
+(102, 1, 'Mouse', 1000),
+(103, 2, 'Phone', 20000);
+
+Explanation:
+
+* Sara has no orders → useful for LEFT JOIN
+
+---
+
+4. INNER JOIN
+
+Command:
+SELECT c.Name, o.Product, o.Amount
+FROM Customers c
+INNER JOIN Orders o
+ON c.CustomerId = o.CustomerId;
+
+Explanation:
+
+* Returns only matching records
+* Customers WITHOUT orders are excluded
+
+---
+
+5. LEFT JOIN
+
+Command:
+SELECT c.Name, o.Product, o.Amount
+FROM Customers c
+LEFT JOIN Orders o
+ON c.CustomerId = o.CustomerId;
+
+Explanation:
+
+* Returns ALL customers
+* If no match → NULL values
+
+---
+
+6. RIGHT JOIN 
+
+Command:
+SELECT c.Name, o.Product, o.Amount
+FROM Customers c
+RIGHT JOIN Orders o
+ON c.CustomerId = o.CustomerId;
+
+Explanation:
+
+* Returns all orders
+* Shows customers where available
+
+---
+
+JOIN TYPES SUMMARY
+
+INNER JOIN:
+
+* Only matching rows
+
+LEFT JOIN:
+
+* All from left table + matches
+
+RIGHT JOIN:
+
+* All from right table + matches
