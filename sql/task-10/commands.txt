@@ -1,0 +1,176 @@
+SQL Task 10: Comprehensive Database Design and Advanced Features
+
+---
+
+1. SCHEMA DESIGN (Normalized Tables)
+
+Command:
+CREATE TABLE Customers (
+CustomerId INT PRIMARY KEY,
+Name VARCHAR(50),
+Email VARCHAR(100) UNIQUE
+);
+
+CREATE TABLE Products (
+ProductId INT PRIMARY KEY,
+Name VARCHAR(50),
+Price DECIMAL(10,2),
+Stock INT
+);
+
+CREATE TABLE Orders (
+OrderId INT PRIMARY KEY,
+CustomerId INT,
+OrderDate DATETIME,
+FOREIGN KEY (CustomerId) REFERENCES Customers(CustomerId)
+);
+
+CREATE TABLE OrderDetails (
+OrderDetailId INT PRIMARY KEY,
+OrderId INT,
+ProductId INT,
+Quantity INT,
+FOREIGN KEY (OrderId) REFERENCES Orders(OrderId),
+FOREIGN KEY (ProductId) REFERENCES Products(ProductId)
+);
+
+Explanation:
+
+* Normalized design (no redundancy)
+* Separate entities with relationships
+
+---
+
+2. INSERT SAMPLE DATA
+
+Command:
+INSERT INTO Customers VALUES (1, 'Affan', '[affan@email.com](mailto:affan@email.com)');
+
+INSERT INTO Products VALUES
+(1, 'Laptop', 60000, 10),
+(2, 'Phone', 20000, 20);
+
+---
+
+3. INDEXING (Performance)
+
+Command:
+CREATE INDEX idx_orders_customer
+ON Orders(CustomerId);
+
+Explanation:
+
+* Speeds up queries filtering by CustomerId
+
+---
+
+4. TRIGGER (Auto Update Stock)
+
+Command:
+CREATE TRIGGER UpdateStock
+ON OrderDetails
+AFTER INSERT
+AS
+BEGIN
+UPDATE Products
+SET Stock = Stock - i.Quantity
+FROM Products p
+JOIN inserted i ON p.ProductId = i.ProductId;
+END;
+
+Explanation:
+
+* Automatically reduces stock when order is placed
+
+---
+
+5. TRANSACTION (Order Processing)
+
+Command:
+BEGIN TRANSACTION;
+
+INSERT INTO Orders VALUES (101, 1, GETDATE());
+
+INSERT INTO OrderDetails VALUES (1, 101, 1, 2);
+
+-- If everything is fine
+COMMIT;
+
+-- If error occurs
+-- ROLLBACK;
+
+Explanation:
+Ensures all operations succeed or fail together.
+
+---
+
+6. VIEW (Simplify Query)
+
+Command:
+CREATE VIEW OrderSummary AS
+SELECT c.Name, o.OrderId, p.Name AS Product, od.Quantity
+FROM Orders o
+JOIN Customers c ON o.CustomerId = c.CustomerId
+JOIN OrderDetails od ON o.OrderId = od.OrderId
+JOIN Products p ON od.ProductId = p.ProductId;
+
+Explanation:
+Simplifies complex joins.
+
+---
+
+7. TEST VIEW
+
+Command:
+SELECT * FROM OrderSummary;
+
+---
+
+8. TEST TRANSACTION FAILURE
+
+Command:
+BEGIN TRANSACTION;
+
+INSERT INTO Orders VALUES (102, 1, GETDATE());
+INSERT INTO OrderDetails VALUES (2, 102, 999, 5); -- invalid product
+
+ROLLBACK;
+
+Explanation:
+Ensures invalid operation does not corrupt data.
+
+---
+
+KEY CONCEPTS
+
+Normalization:
+
+* Avoid redundancy
+* Separate concerns into tables
+
+---
+
+INDEXES:
+
+* Improve read performance
+* Trade-off: slower writes
+
+---
+
+TRIGGERS:
+
+* Automatic actions on events
+
+---
+
+TRANSACTIONS:
+
+* ACID properties
+* Maintain consistency
+
+---
+
+VIEWS:
+
+* Simplify queries
+* Improve readability
