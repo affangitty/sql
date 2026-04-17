@@ -1,0 +1,115 @@
+SQL Task 8: Common Table Expressions (CTEs) and Recursive Queries
+
+1. Non-Recursive CTE (Average Salary per Department)
+
+Command:
+WITH DeptAvg AS (
+SELECT Department, AVG(Salary) AS AvgSalary
+FROM Employees
+GROUP BY Department
+)
+SELECT e.Name, e.Department, e.Salary
+FROM Employees e
+JOIN DeptAvg d ON e.Department = d.Department
+WHERE e.Salary > d.AvgSalary;
+
+Explanation:
+
+* CTE (DeptAvg) calculates average salary per department
+* Main query filters employees above department average
+* Improves readability vs nested subqueries
+
+---
+
+2. Create Hierarchical Table
+
+Command:
+CREATE TABLE EmployeesHierarchy (
+Id INT PRIMARY KEY,
+Name VARCHAR(50),
+ManagerId INT
+);
+
+Explanation:
+
+* ManagerId refers to another employee (self-reference)
+
+---
+
+3. Insert Sample Data
+
+Command:
+INSERT INTO EmployeesHierarchy VALUES
+(1, 'CEO', NULL),
+(2, 'Manager A', 1),
+(3, 'Manager B', 1),
+(4, 'Employee 1', 2),
+(5, 'Employee 2', 2),
+(6, 'Employee 3', 3);
+
+Explanation:
+Creates hierarchy:
+CEO → Managers → Employees
+
+---
+
+4. Recursive CTE
+
+Command:
+WITH OrgChart AS (
+    -- Base case (top-level)
+    SELECT Id, Name, ManagerId, 0 AS Level
+    FROM EmployeesHierarchy
+    WHERE ManagerId IS NULL
+
+    UNION ALL
+
+    -- Recursive case
+    SELECT e.Id, e.Name, e.ManagerId, o.Level + 1
+    FROM EmployeesHierarchy e
+    JOIN OrgChart o ON e.ManagerId = o.Id
+
+)
+SELECT * FROM OrgChart;
+
+Explanation:
+
+* Base case → starts with CEO
+* Recursive case → finds subordinates
+* Level shows hierarchy depth
+
+---
+
+5. Display Hierarchy with Indentation
+
+Command:
+SELECT REPLICATE(' ', Level * 4) + Name AS Hierarchy
+FROM OrgChart;
+
+Explanation:
+Formats output visually like a tree
+
+---
+
+IMPORTANT CONCEPTS
+
+CTE:
+
+* Temporary result set
+* Improves readability
+* Exists only for one query
+
+---
+
+RECURSIVE CTE STRUCTURE
+
+1. Base Query
+2. UNION ALL
+3. Recursive Query
+
+---
+
+TERMINATION
+
+* Stops when no more rows match
+* Prevents infinite loop
